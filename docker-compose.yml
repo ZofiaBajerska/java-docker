@@ -1,19 +1,16 @@
-version: '2.3'
+version: '3'
 services:
-  micro:
-    image: micro
+  postgres:
+    build: DockerDb/
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=admin
     ports:
-      - "8888:8080"
-    depends_on:
-        micro-2:
-          condition: service_healthy
-
-  micro-2:
-    image: micro
+      - "5432:5432"
+  app:
+    build: /
     ports:
-      - "8889:8080"
-    healthcheck:
-       test: [ "CMD" ,"curl", "-f", "http://localhost:8080/user/list"]
-       interval: 10s
-       retries: 3
-       start_period: 10s
+      - "8080:8080"
+volumes:
+  db-data:

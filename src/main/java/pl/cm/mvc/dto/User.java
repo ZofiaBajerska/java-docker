@@ -1,10 +1,6 @@
 package pl.cm.mvc.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +11,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Table(name="userlist")
 public class User {
 
 
