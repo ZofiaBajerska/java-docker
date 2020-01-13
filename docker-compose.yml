@@ -1,16 +1,18 @@
-version: '3'
+version: '2.3'
 services:
-  postgres:
-    build: DockerDb/
-    volumes:
-      - db-data:/var/lib/postgresql/data/
+  postgresdb:
+    image: postgres
+    restart: always
     environment:
-      - POSTGRES_PASSWORD=admin
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: testdb
   app:
-    build: /
+    image: cm/bajerska:1.8
     ports:
       - "8080:8080"
+    depends_on:
+      - postgresdb
 volumes:
   db-data:
+
