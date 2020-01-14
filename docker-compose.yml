@@ -7,12 +7,29 @@ services:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
       POSTGRES_DB: testdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   app:
     image: cm/bajerska:1.8
     ports:
       - "8080:8080"
+    healthcheck:
+      test: [ "CMD" ,"curl", "-f", "http://localhost:8080/user/list"]
+      interval: 10s
+      retries: 3
     depends_on:
-      - postgresdb
+      postgresdb:
+          condition: service_healthy
+  client:
+    image: restclient
+    environment:
+      - ADDRESS=192.168.0.150:8080/user/list
+    depends_on:
+      app:
+          condition: service_healthy
 volumes:
   db-data:
 
